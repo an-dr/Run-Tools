@@ -1,3 +1,6 @@
+# =============================================================================
+# Public
+# =============================================================================
 function Run-AsUser ($Process, $ProcArgs)
 {
     $args4runas = @()
@@ -26,8 +29,6 @@ function Run-Elevated ($Process, $ProcArgs)
 {
     Start-Process -FilePath $Process -ArgumentList $ProcArgs -Verb RunAs
 }
-
-
 
 
 function isAdmin
@@ -61,3 +62,10 @@ function Elevate-Me {
         Start-Process pwsh.exe "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit
     }
 }
+
+Export-ModuleMember -Function Elevate-Me
+Export-ModuleMember -Function isAdmin
+Export-ModuleMember -Function isAdminCheck
+Export-ModuleMember -Function Run-AsAdmin
+Export-ModuleMember -Function Run-AsUser
+Export-ModuleMember -Function Run-Elevated
