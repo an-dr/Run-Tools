@@ -21,7 +21,7 @@ ModuleVersion = '0.9.1'
 GUID = '980b71e2-1f2f-4c5d-956c-5088cf828b18'
 
 # Author of this module
-Author = 'Andrei \''an-dr\'' Gramakov'
+Author = 'Andrei "an-dr" Gramakov'
 
 # Company or vendor of this module
 CompanyName = ''
