@@ -30,7 +30,7 @@ CompanyName = ''
 Copyright = '(c) Andrei Gramakov. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'PowerShell tools for running processes with different privileges (Elevated/Not) from other user (Admin/Other) and more'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
