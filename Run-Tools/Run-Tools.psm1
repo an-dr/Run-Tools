@@ -63,9 +63,9 @@ function Elevate-Me {
     }
 }
 
-Export-ModuleMember -Function Elevate-Me
-Export-ModuleMember -Function isAdmin
-Export-ModuleMember -Function isAdminCheck
-Export-ModuleMember -Function Run-AsAdmin
-Export-ModuleMember -Function Run-AsUser
-Export-ModuleMember -Function Run-Elevated
+Export-ModuleMember -Function "Run-AsAdmin"
+Export-ModuleMember -Function "Run-AsUser"
+Export-ModuleMember -Function "Run-Elevated"
+Export-ModuleMember -Function "Elevate-Me"
+Export-ModuleMember -Function "isAdmin"
+Export-ModuleMember -Function "isAdminCheck"
