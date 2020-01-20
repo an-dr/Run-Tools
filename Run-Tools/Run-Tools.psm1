@@ -1,27 +1,41 @@
 # =============================================================================
+# Private
+# =============================================================================
+
+function Get-AdminAccountName
+{
+    return (Get-LocalUser | Where-Object { $_.SID -like 'S-1-5-*-500' }).Name
+}
+
+# =============================================================================
 # Public
 # =============================================================================
-function Run-AsUser ($Process, $ProcArgs)
+
+
+
+function Run-AsUser
 {
+    [CmdletBinding()]
+    param (
+        [parameter(Mandatory = $true)][String]$Process,
+        [parameter(Mandatory = $false)][String]$ProcArgs,
+        [parameter(Mandatory = $false)][String]$User
+    )
+    if (!$User) { $User = $env:UserName }
     $args4runas = @()
     $args4runas += $Process, $ProcArgs
     $newProcess = New-Object System.Diagnostics.ProcessStartInfo "runas";
-    $newProcess.ArgumentList.Add("/trustlevel:0x20000")
+    $newProcess.ArgumentList.Add("/user:$User")
+    $newProcess.ArgumentList.Add("/savecred")
     $newProcess.ArgumentList.Add("$args4runas")
     Write-Verbose "$($newProcess.ArgumentList)"
-    [System.Diagnostics.Process]::Start($newProcess)
+    [System.Diagnostics.Process]::Start($newProcess) 2>&1>null
 }
 
 function Run-AsAdmin ($Process, $ProcArgs)
 {
-    $args4runas = @()
-    $args4runas += $Process, $ProcArgs
-    $newProcess = New-Object System.Diagnostics.ProcessStartInfo "runas";
-    $newProcess.ArgumentList.Add("/user:Administrator")
-    $newProcess.ArgumentList.Add("/savecred")
-    $newProcess.ArgumentList.Add("$args4runas")
-    Write-Verbose "$($newProcess.ArgumentList)"
-    [System.Diagnostics.Process]::Start($newProcess)
+    $admin_name = Get-AdminAccountName
+    Run-AsUser -User $admin_name -Process $Process -ProcArgs $ProcArgs
 }
 
 
@@ -29,7 +43,6 @@ function Run-Elevated ($Process, $ProcArgs)
 {
     Start-Process -FilePath $Process -ArgumentList $ProcArgs -Verb RunAs
 }
-
 
 function isAdmin
 {
@@ -45,7 +58,8 @@ function isAdmin
     }
 }
 
-function isAdminCheck {
+function isAdminCheck
+{
     if (!$(isAdmin))
     {
         Write-Error "You should be an Admin to do this"
@@ -55,7 +69,8 @@ function isAdminCheck {
 }
 
 
-function Elevate-Me {
+function Elevate-Me
+{
     if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
     {
         "Not Admin"
