@@ -12,7 +12,6 @@ function Get-AdminAccountName
 # =============================================================================
 
 
-
 function Run-AsUser
 {
     [CmdletBinding()]
@@ -22,14 +21,9 @@ function Run-AsUser
         [parameter(Mandatory = $false)][String]$User
     )
     if (!$User) { $User = $env:UserName }
-    $args4runas = @()
-    $args4runas += $Process, $ProcArgs
-    $newProcess = New-Object System.Diagnostics.ProcessStartInfo "runas";
-    $newProcess.ArgumentList.Add("/user:$User")
-    $newProcess.ArgumentList.Add("/savecred")
-    $newProcess.ArgumentList.Add("$args4runas")
-    Write-Verbose "$($newProcess.ArgumentList)"
-    [System.Diagnostics.Process]::Start($newProcess) 2>&1>null
+        $args4run = @()
+        $args4run += "/user:$User", "/savecred", "`"$Process $ProcArgs`""
+        Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run
 }
 
 function Run-AsAdmin ($Process, $ProcArgs)
