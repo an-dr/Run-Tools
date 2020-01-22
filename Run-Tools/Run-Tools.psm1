@@ -18,12 +18,17 @@ function Run-AsUser
     param (
         [parameter(Mandatory = $true)][String]$Process,
         [parameter(Mandatory = $false)][String]$ProcArgs,
-        [parameter(Mandatory = $false)][String]$User
+        [parameter(Mandatory = $false)][String]$User,
+        [parameter(Mandatory = $false)][Switch]$Wait
     )
     if (!$User) { $User = $env:UserName }
-        $args4run = @()
-        $args4run += "/user:$User", "/savecred", "`"$Process $ProcArgs`""
-        Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)
+    $args4run = @()
+    $args4run += "/user:$User", "/savecred", "`"$Process $ProcArgs`""
+    if($Wait){Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)}
+    else{
+        Start-Process -NoNewWindow runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)
+        Write-Output "[DONE] The process is launched in backgroung. Press Enter to continue"
+    }
 }
 
 function Run-AsAdmin ($Process, $ProcArgs)
