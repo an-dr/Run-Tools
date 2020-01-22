@@ -23,7 +23,7 @@ function Run-AsUser
     if (!$User) { $User = $env:UserName }
         $args4run = @()
         $args4run += "/user:$User", "/savecred", "`"$Process $ProcArgs`""
-        Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run
+        Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)
 }
 
 function Run-AsAdmin ($Process, $ProcArgs)
