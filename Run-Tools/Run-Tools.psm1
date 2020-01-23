@@ -14,7 +14,6 @@ function Get-AdminAccountName
 
 function Run-AsUser
 {
-    [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)][String]$Process,
         [parameter(Mandatory = $false)][String]$ProcArgs,
@@ -24,23 +23,36 @@ function Run-AsUser
     if (!$User) { $User = $env:UserName }
     $args4run = @()
     $args4run += "/user:$User", "/savecred", "`"$Process $ProcArgs`""
-    if($Wait){Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)}
-    else{
+    if ($Wait) { Start-Process -NoNewWindow -Wait runas -ArgumentList $args4run -WorkingDirectory $(Get-Location) }
+    else
+    {
         Start-Process -NoNewWindow runas -ArgumentList $args4run -WorkingDirectory $(Get-Location)
         Write-Output "[DONE] The process is launched in backgroung. Press Enter to continue"
     }
 }
 
-function Run-AsAdmin ($Process, $ProcArgs)
+function Run-AsAdmin
 {
+    param (
+        [parameter(Mandatory = $true)][String]$Process,
+        [parameter(Mandatory = $false)][String]$ProcArgs,
+        [parameter(Mandatory = $false)][Switch]$Wait
+    )
     $admin_name = Get-AdminAccountName
-    Run-AsUser -User $admin_name -Process $Process -ProcArgs $ProcArgs
+    if ($Wait) { Run-AsUser -Wait -User $admin_name -Process $Process -ProcArgs $ProcArgs }
+    else { Run-AsUser -User $admin_name -Process $Process -ProcArgs $ProcArgs }
 }
 
 
-function Run-Elevated ($Process, $ProcArgs)
+function Run-Elevated
 {
-    Start-Process -FilePath $Process -ArgumentList $ProcArgs -Verb RunAs
+    param (
+        [parameter(Mandatory = $true)][String]$Process,
+        [parameter(Mandatory = $false)][String]$ProcArgs,
+        [parameter(Mandatory = $false)][Switch]$Wait
+    )
+    if ($Wait) { Start-Process -Wait -FilePath $Process -ArgumentList $ProcArgs -Verb RunAs }
+    else { Start-Process -FilePath $Process -ArgumentList $ProcArgs -Verb RunAs }
 }
 
 function isAdmin
@@ -67,13 +79,16 @@ function isAdminCheck
     return $true
 }
 
-
 function Elevate-Me
 {
     if (!$(isAdmin))
     {
-        "Your have no Administrator rights. Elevating..."
-        Run-Elevated "pwsh" "-ExecutionPolicy Bypass -File `"$PSCommandPath`""
+        # $script_to_elevate = $PSCommandPath
+        $script_to_elevate = $(Get-PSCallStack)[1].ScriptName # previous script from stack - script called this func
+
+        "Your have no Administrator's rights for $script_to_elevate.`Let's fix it..."
+        Run-Elevated "pwsh" "-ExecutionPolicy Bypass -File `"$script_to_elevate`""
+        exit
     }
 }
 
