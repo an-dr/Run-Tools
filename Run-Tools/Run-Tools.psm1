@@ -70,10 +70,10 @@ function isAdminCheck
 
 function Elevate-Me
 {
-    if (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+    if (!$(isAdmin))
     {
-        "Not Admin"
-        Start-Process pwsh.exe "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs; exit
+        "Your have no Administrator rights. Elevating..."
+        Run-Elevated "pwsh" "-ExecutionPolicy Bypass -File `"$PSCommandPath`""
     }
 }
 
