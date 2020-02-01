@@ -13,7 +13,7 @@ For a copy, see: [LICENSE](LICENSE)
 
 ## Support
 
-If you will decide to sopport me, you can send some pretty words to my email or kust use the link
+If you will decide to sopport me, you can send some pretty words on my email or just use the link
 
 [Buy me a cup of tea](https://paypal.me/4ndr/1eur)
 
