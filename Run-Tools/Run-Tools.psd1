@@ -27,7 +27,7 @@ Author = 'Andrei "an-dr" Gramakov'
 CompanyName = ''
 
 # Copyright statement for this module
-Copyright = '(c) Andrei Gramakov. All rights reserved.'
+Copyright = 'MIT (c) Andrei Gramakov. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'PowerShell tools for running processes with different privileges (Elevated/Not) from other user (Admin/Other) and more'
@@ -69,7 +69,7 @@ PowerShellVersion = '5.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = '*'
+FunctionsToExport = 'Run-AsAdmin', "Run-AsUser", "Run-Elevated", "Elevate-Me", "isAdmin", "isAdminCheck"
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -95,16 +95,16 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @("elevate", "admin", "rights", "tools", "run", "privileges")
 
         # A URL to the license for this module.
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/an-dr/Run-Tools'
 
         # A URL to an icon representing this module.
-        # IconUri = ''
+        IconUri = 'https://github.com/an-dr/Run-Tools/raw/master/src/logo.png'
 
         # ReleaseNotes of this module
         # ReleaseNotes = ''
