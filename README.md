@@ -1,10 +1,10 @@
 # Run-Tools
 
-src/logo.png
 ![Main picture](src/logo.png)
 
 PowerShell tools for running processes with different privileges (Elevated/Not) from other user (Admin/Other) and more
 
+[@Powershell_Gallery](https://www.powershellgallery.com/packages/Run-Tools/)
 
 ## License
 
